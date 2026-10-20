@@ -1,0 +1,43 @@
+=== 0. What management sees ===
+Revenue months 1–6:  EUR 7,033,432
+Revenue months 25–30: EUR 6,000,507  (-14.7%)
+
+=== 1. Time machine: compare snapshot versions (month 12 vs. month 30) ===
+        late_rate_m12  late_rate_m30  complaints_m12  complaints_m30
+region                                                              
+East            0.049          0.066            11.0            20.0
+North           0.055          0.066            20.0            17.0
+South           0.071          0.276            16.0            69.0
+West            0.092          0.067            13.0            16.0
+
+=== 2. Process mining: order-to-cash event log ===
+75,699 events, 12,338 cases, 4 process variants
+Happy path share: 93.2%
+       rework_or_complaint        avg_lead_days       
+period               after before         after before
+region                                                
+East                  0.05   0.03          3.93   3.78
+North                 0.05   0.04          3.93   3.95
+South                 0.26   0.04          5.86   3.92
+West                  0.04   0.05          3.87   4.03
+
+=== 3. Churn model with backtest (trained 'as of' month 18) ===
+Out-of-time AUC: 0.76 | precision@0.5: 0.15 | recall@0.5: 0.65
+Strongest drivers (positive = more churn):
+late_rate_last6       2.17
+complaints_last6      1.60
+orders_last6          0.21
+avg_lead_last6        0.08
+rev_trend            -0.49
+months_since_order   -0.82
+
+=== 4. Today (month 30): revenue at risk in the next 6 months ===
+        customers  high_risk  revenue_at_risk  share  share_of_customers
+region                                                                  
+South         176         70         118911.0  0.405               0.237
+North         240         25          74560.0  0.254               0.323
+East          189         30          55491.0  0.189               0.254
+West          138         17          44602.0  0.152               0.186
+
+Total revenue at risk: EUR 293,564 (~5% of last-6-month revenue)
+Secret uncovered: since month 15 the South region's late-delivery rate jumped (new logistics partner) -> rework + complaints -> customers leave 1–3 months later.
